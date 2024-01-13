@@ -1,0 +1,32 @@
+{
+  "name": "divar",
+  "version": "1.0.0",
+  "description": "a divar project",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon node main.js"
+  },
+  "keywords": [
+    "divar",
+    "nodejs",
+    "express"
+  ],
+  "author": "dev+",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "auto-bind": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "http-status-codes": "^2.3.0",
+    "mongoose": "^8.0.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  }
+}
