@@ -4,6 +4,8 @@ import { DatabaseConfig } from "./src/config/database/databaseConfig.js"
 import { ServerConfig } from "./src/config/server/serverconfig.js"
 import { SwaggerConfig } from "./src/config/api/swaggerConfig.js"
 import { MainRouter } from "./src/app.routes.js"
+import { notFoundHandler } from "./src/handlers/errors/not_found.js"
+import { allErrorsHandler } from "./src/handlers/errors/all_errors.js"
 
 const main = () => {
     const app = express()
@@ -16,6 +18,10 @@ const main = () => {
 
     // router middlware
     app.use(MainRouter)
+
+    // error handlers
+    notFoundHandler(app)
+    allErrorsHandler(app)
 
 
     // server and database and api configuration
