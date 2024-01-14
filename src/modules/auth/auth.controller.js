@@ -26,7 +26,18 @@ export const AuthController = (() => {
                 next(error)
             }
         }
-        async check_otp() { }
+        async check_otp(req, res, next) {
+            try {
+                const { phone, code } = req.body
+                const user = await this.#service.check_otp(phone, code)
+                return res.status(StatusCodes.OK).json({
+                    message: AuthMessages.LoginSuccessfully,
+                    user: user.phone
+                })
+            } catch (error) {
+                next(error)
+            }
+        }
     }
     return new AuthController()
 })()

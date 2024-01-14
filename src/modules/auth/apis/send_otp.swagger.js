@@ -15,7 +15,7 @@
  * @swagger
  * /auth/send-otp:
  *  post:
- *      summary: login with otp code in this endpoint
+ *      summary: send otp code to the user in this endpoint
  *      tags:
  *          -   Authorization
  *      requestBody:

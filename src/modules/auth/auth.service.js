@@ -34,7 +34,17 @@ export const AuthService = (() => {
         }
 
         // check otp code
-        async check_otp(phone, code) { }
+        async check_otp(phone, code) {
+            const user = await this.check_user_exists_by_phone(phone)
+            const now = new Date().getTime()
+            if (user?.otp?.expiresIn < now) throw new createHttpError.Unauthorized(AuthMessages.OtpCodeExpired)
+            if (user?.otp?.code !== code) throw new createHttpError.Unauthorized(AuthMessages.OtpCodeNotCorrect)
+            if (!user.verified_phone) {
+                user.verified_phone = true
+                await user.save()
+            }
+            return user
+        }
 
 
 

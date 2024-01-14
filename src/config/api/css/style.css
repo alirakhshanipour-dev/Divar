@@ -1,0 +1,33 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* HTTP methods */
+.swagger-ui .opblock-summary-method {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+/* Try it out button */
+.swagger-ui .try-out__btn, 
+.swagger-ui .execute-button {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.swagger-ui .swagger-ui {
+  scrollbar-color: #dee2e6 #ffffff;
+}
+
+.swagger-ui .swagger-ui::-webkit-scrollbar {
+  width: 8px;
+}
+
+.swagger-ui .swagger-ui::-webkit-scrollbar-thumb {
+  background-color: #dee2e6;
+}
+
+.swagger-ui .swagger-ui::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
