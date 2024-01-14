@@ -15,18 +15,21 @@ const main = () => {
     app.use(express.urlencoded({ extended: true }))
     app.use(morgan("tiny"))
 
+    // swaager configuration - api documentation
+    SwaggerConfig.setup(app)
+
 
     // router middlware
     app.use(MainRouter)
 
+
     // error handlers
-    notFoundHandler(app)
     allErrorsHandler(app)
+    notFoundHandler(app)
 
 
     // server and database and api configuration
     DatabaseConfig.connect_mongo()
-    SwaggerConfig.setup(app)
     ServerConfig.run(app)
 }
 

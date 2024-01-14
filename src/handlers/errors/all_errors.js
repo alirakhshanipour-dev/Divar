@@ -7,6 +7,5 @@ export const allErrorsHandler = (app) => {
         res.status(status).json({
             message: err?.message ?? err?.stack ?? ErrorMessages.ServerError
         })
-        next()
     })
 }

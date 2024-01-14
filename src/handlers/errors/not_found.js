@@ -5,6 +5,5 @@ export const notFoundHandler = (app) => {
         res.status(StatusCodes.NOT_FOUND).json({
             message: "not found route"
         })
-        next()
     })
 }
