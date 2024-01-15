@@ -2,6 +2,9 @@ import autoBind from "auto-bind"
 import { AuthService } from "./auth.service.js"
 import { AuthMessages } from "./messages/auth.messages.js"
 import { StatusCodes } from "http-status-codes"
+import { config } from "dotenv"
+import { NodeEnv } from "../../constant/env.enum.js"
+config()
 
 export const AuthController = (() => {
     class AuthController {
@@ -30,10 +33,16 @@ export const AuthController = (() => {
             try {
                 const { phone, code } = req.body
                 const user = await this.#service.check_otp(phone, code)
-                return res.status(StatusCodes.OK).json({
-                    message: AuthMessages.LoginSuccessfully,
-                    user: user.phone
-                })
+
+                // set access token in cookie
+                return res.cookie("access_token", user.access_token,
+                    {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === NodeEnv.Production
+                    }).status(StatusCodes.OK).json({
+                        message: AuthMessages.LoginSuccessfully,
+                        user: { phone: user?.phone, accessToken: user?.access_token }
+                    })
             } catch (error) {
                 next(error)
             }

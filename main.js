@@ -6,15 +6,17 @@ import { SwaggerConfig } from "./src/config/api/swaggerConfig.js";
 import { MainRouter } from "./src/app.routes.js";
 import { notFoundHandler } from "./src/handlers/errors/not_found.js";
 import { allErrorsHandler } from "./src/handlers/errors/all_errors.js";
+import cookieParser from "cookie-parser";
 
 const main = () => {
     const app = express();
 
-    // middleware
+    // middlewares
     app.use(express.json());
     app.use(express.static("public"));
     app.use(express.urlencoded({ extended: true }));
     app.use(morgan("dev"));
+    app.use(cookieParser(process.env.COOKIE_SECRET_KEY))
 
 
     // router middleware

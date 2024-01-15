@@ -3,6 +3,9 @@ import { UserModel } from "../user/user.model.js"
 import createHttpError from "http-errors"
 import { AuthMessages } from "./messages/auth.messages.js"
 import { randomInt } from "crypto"
+import jwt from "jsonwebtoken"
+import { config } from "dotenv"
+config()
 
 export const AuthService = (() => {
     class AuthService {
@@ -41,8 +44,10 @@ export const AuthService = (() => {
             if (user?.otp?.code !== code) throw new createHttpError.Unauthorized(AuthMessages.OtpCodeNotCorrect)
             if (!user.verified_phone) {
                 user.verified_phone = true
-                await user.save()
             }
+            const accessToken = this.sign_token({ phone, userID: user._id })
+            user.access_token = accessToken
+            await user.save()
             return user
         }
 
@@ -53,6 +58,11 @@ export const AuthService = (() => {
             const user = await this.#model.findOne({ phone })
             if (!user) throw new createHttpError.NotFound(AuthMessages.UserNotFound)
             return user
+        }
+
+        sign_token(payload) {
+            const secretKey = process.env.JWT_SECRET
+            return jwt.sign(payload, secretKey, { expiresIn: "1d" })
         }
     }
 

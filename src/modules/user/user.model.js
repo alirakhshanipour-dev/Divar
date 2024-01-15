@@ -9,7 +9,8 @@ const UserSchema = new Schema({
     fullName: { type: String, required: false },
     phone: { type: String, required: true, unique: true },
     otp: { type: OtpSchema },
-    verified_phone: { type: Boolean, required: true, default: false }
+    verified_phone: { type: Boolean, required: true, default: false },
+    access_token: { type: String },
 },
     { timestamps: true })
 
