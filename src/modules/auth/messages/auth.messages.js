@@ -4,5 +4,6 @@ export const AuthMessages = Object.freeze({
     OtpCodeNotExpired: "otp code is not expired, please try later",
     OtpCodeExpired: "otp code is expired, please try again",
     OtpCodeNotCorrect: "otp code is not correct, please try again",
-    LoginSuccessfully: "user logged in successfully"
+    LoginSuccessfully: "user logged in successfully",
+    LogoutSuccessfully: "user logged out successfully",
 })

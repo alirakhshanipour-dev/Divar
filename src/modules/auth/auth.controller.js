@@ -4,6 +4,7 @@ import { AuthMessages } from "./messages/auth.messages.js"
 import { StatusCodes } from "http-status-codes"
 import { config } from "dotenv"
 import { NodeEnv } from "../../constant/env.enum.js"
+import { CookieNames } from "../../constant/cookie.enum.js"
 config()
 
 export const AuthController = (() => {
@@ -35,7 +36,7 @@ export const AuthController = (() => {
                 const user = await this.#service.check_otp(phone, code)
 
                 // set access token in cookie
-                return res.cookie("access_token", user.access_token,
+                return res.cookie(CookieNames.AccessToken, user.access_token,
                     {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === NodeEnv.Production
@@ -43,6 +44,17 @@ export const AuthController = (() => {
                         message: AuthMessages.LoginSuccessfully,
                         user: { phone: user?.phone, accessToken: user?.access_token }
                     })
+            } catch (error) {
+                next(error)
+            }
+        }
+
+        // logout user
+        async logout(req, res, next) {
+            try {
+                return res.clearCookie(CookieNames.AccessToken).status(StatusCodes.OK).json({
+                    message: AuthMessages.LogoutSuccessfully
+                })
             } catch (error) {
                 next(error)
             }
