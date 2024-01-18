@@ -2,6 +2,7 @@ import autoBind from "auto-bind"
 import { OptionService } from "./option.service.js"
 import { StatusCodes } from "http-status-codes"
 import { OptionMessages } from "./messages/option.messages.js"
+import { isValidObjectId } from "mongoose"
 
 
 
@@ -31,7 +32,11 @@ export const OptionController = (() => {
 
         async findByCategoryId(req, res, next) {
             try {
-
+                const { categoryId } = req.params
+                const options = await this.#service.findByCategoryId(categoryId)
+                return res.status(StatusCodes.OK).json({
+                    options
+                })
             } catch (error) {
                 next(error)
             }

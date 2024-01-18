@@ -5,6 +5,7 @@ import { CategoryMessages } from "../category/messages/category.messages.js"
 import { OptionMessages } from "./messages/option.messages.js"
 import slugify from "slugify"
 import { CategoryModel } from "../category/category.model.js"
+import { isValidObjectId } from "mongoose"
 
 export const OptionService = (() => {
     class OptionService {
@@ -30,7 +31,15 @@ export const OptionService = (() => {
         }
 
 
-        async findByCategoryId() { }
+        async findByCategoryId(id) {
+            if (!isValidObjectId(id)) throw new createHttpError.Conflict(CategoryMessages.CategortNotValid)
+            const options = await this.#model.find({ category: id }, { __v: 0 })
+                .populate([{
+                    path: "category",
+                    select: { name: 1, slug: 1 }
+                }])
+            return options
+        }
         async findById() { }
         async find() {
             const options = await this.#model.find({},
