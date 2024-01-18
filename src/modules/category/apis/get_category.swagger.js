@@ -10,3 +10,20 @@
  *              description: success
  *                      
 */
+
+/**
+ * @swagger
+ * /category/{id}:
+ *  get:
+ *      summary: get category by id in this endpoint
+ *      tags:
+ *          -   Category
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: success
+ *
+*/

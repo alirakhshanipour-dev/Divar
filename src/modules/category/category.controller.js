@@ -31,7 +31,10 @@ export const CategoryController = (() => {
         // get all categories
         async get_categories(req, res, next) {
             try {
-
+                const categories = await this.#service.get_categories()
+                return res.status(StatusCodes.OK).json({
+                    categories
+                })
             } catch (error) {
                 next(error)
             }
@@ -40,7 +43,11 @@ export const CategoryController = (() => {
         // get category
         async get_category(req, res, next) {
             try {
-
+                const { id } = req.params
+                const category = await this.#service.get_category(id)
+                return res.status(StatusCodes.OK).json({
+                    category
+                })
             } catch (error) {
                 next(error)
             }

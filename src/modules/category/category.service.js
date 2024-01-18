@@ -34,9 +34,16 @@ export const CategoryService = (() => {
             return category
         }
 
-        async get_categories() { }
+        async get_categories() {
+            const categories = await this.#model.find({}).lean()
+            return categories
+        }
 
-        async get_category() { }
+        async get_category(id) {
+            const category = await this.#model.findById(id)
+            if (!category) throw new createHttpError.NotFound(CategoryMessages.CategoryNotFound)
+            return category
+        }
 
 
         // asistant methods
