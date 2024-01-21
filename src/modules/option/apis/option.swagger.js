@@ -79,6 +79,24 @@
  *
 */
 
+/**
+ * @swagger
+ * /option/by-category-slug/{slug}:
+ *  get:
+ *      summary: get options by category slug in this endpoint
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: slug
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: success
+ *
+*/
+
+
 
 /**
  * @swagger

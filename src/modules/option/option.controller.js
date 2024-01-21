@@ -43,18 +43,27 @@ export const OptionController = (() => {
         }
         async findById(req, res, next) {
             try {
-
+                const { id } = req.params
+                const option = await this.#service.findById(id)
+                return res.status(StatusCodes.OK).json(option)
+            } catch (error) {
+                next(error)
+            }
+        }
+        async findByCategorySlug(req, res, next) {
+            try {
+                const { slug } = req.params
+                const options = await this.#service.findByCategorySlug(slug)
+                return res.status(StatusCodes.OK).json(options)
             } catch (error) {
                 next(error)
             }
         }
         async find(req, res, next) {
-            const options = await this.#service.find()
-            return res.status(StatusCodes.OK).json({
-                options
-            })
-            try {
 
+            try {
+                const options = await this.#service.find()
+                return res.status(StatusCodes.OK).json(options)
             } catch (error) {
                 next(error)
             }

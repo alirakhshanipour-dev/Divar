@@ -32,7 +32,7 @@ export const OptionService = (() => {
 
 
         async findByCategoryId(id) {
-            if (!isValidObjectId(id)) throw new createHttpError.Conflict(CategoryMessages.CategortNotValid)
+            if (!isValidObjectId(id)) throw new createHttpError.Conflict(CategoryMessages.CategoryNotValid)
             const options = await this.#model.find({ category: id }, { __v: 0 })
                 .populate([{
                     path: "category",
@@ -40,7 +40,44 @@ export const OptionService = (() => {
                 }])
             return options
         }
-        async findById() { }
+        async findByCategorySlug(slug) {
+            const options = await this.#model.aggregate([
+                {
+                    $lookup: {
+                        from: "categories",
+                        localField: "category",
+                        foreignField: "_id",
+                        as: "category"
+                    },
+                }, {
+                    $unwind: "$category"
+                }, {
+                    $addFields: {
+                        categoryName: "$category.name",
+                        categorySlug: "$category.slug",
+                        categoryIcon: "$category.icon",
+                    }
+                }, {
+                    $project: {
+                        category: 0,
+                        __v: 0
+                    }
+                }, {
+                    $match: {
+                        categorySlug: slug
+                    }
+                }
+            ])
+            return options
+        }
+        async findById(id) {
+            if (!isValidObjectId(id)) throw new createHttpError.Conflict(OptionMessages.OptionNotValid)
+            const option = await this.#model.findById(id)
+
+            if (!option) throw new createHttpError.NotFound(OptionMessages.OptionNotFound)
+            return option
+        }
+
         async find() {
             const options = await this.#model.find({},
                 { _id: 0, __v: 0 },

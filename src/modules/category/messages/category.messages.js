@@ -5,5 +5,5 @@ export const CategoryMessages = Object.freeze({
     CategoryNotExistsById: "category does not exist by this id",
     ParentNotValid: 'parent id is not valid',
     SlugExists: "slug already exists",
-    CategortNotValid: "category id is not valid"
+    CategoryNotValid: "category id is not valid"
 })
