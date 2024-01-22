@@ -19,8 +19,8 @@ export const OptionController = (() => {
 
         async create(req, res, next) {
             try {
-                const { title, key, guide, enum: list, type, category } = req.body
-                await this.#service.create({ title, key, guide, enum: list, type, category })
+                const { title, key, guide, enum: list, type, is_required, category } = req.body
+                await this.#service.create({ title, key, guide, enum: list, type, is_required, category })
                 return res.status(StatusCodes.CREATED).json({
                     message: OptionMessages.OptionCreated
                 })
@@ -64,6 +64,31 @@ export const OptionController = (() => {
             try {
                 const options = await this.#service.find()
                 return res.status(StatusCodes.OK).json(options)
+            } catch (error) {
+                next(error)
+            }
+        }
+
+        async delete(req, res, next) {
+            try {
+                const { id } = req.params
+                await this.#service.delete(id)
+                return res.status(StatusCodes.NO_CONTENT).json({
+                    message: OptionMessages.OptionDeleted
+                })
+            } catch (error) {
+                next(error)
+            }
+        }
+
+        async update(req, res, next) {
+            try {
+                const { title, key, guid, enum: list, type, category, required } = req.body;
+                const { id } = req.params;
+                await this.#service.update(id, { title, key, guid, enum: list, type, category, required })
+                return res.json({
+                    message: OptionMessages.OptionUpdated
+                })
             } catch (error) {
                 next(error)
             }

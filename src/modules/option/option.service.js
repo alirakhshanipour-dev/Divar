@@ -6,15 +6,18 @@ import { OptionMessages } from "./messages/option.messages.js"
 import slugify from "slugify"
 import { CategoryModel } from "../category/category.model.js"
 import { isValidObjectId } from "mongoose"
+import { CategoryService } from "../category/category.service.js"
+import { isFalse, isTrue } from "../../common/utils.js"
 
 export const OptionService = (() => {
     class OptionService {
         #model
         #categoryModel
+        #categoryService
         constructor() {
             autoBind(this)
             this.#model = OptionModel
-            this.#categoryModel = CategoryModel
+            this.#categoryService = CategoryService
         }
 
         async create(optionDTO) {
@@ -80,7 +83,7 @@ export const OptionService = (() => {
 
         async find() {
             const options = await this.#model.find({},
-                { _id: 0, __v: 0 },
+                { __v: 0 },
                 { sort: { _id: -1 } })
                 .lean()
                 .populate({
@@ -91,7 +94,43 @@ export const OptionService = (() => {
         }
 
 
+        async delete(id) {
+            await this.check_option_isvalid(id)
+            await this.check_option_exists_by_id(id)
+            return await this.#model.deleteOne({ _id: id })
+        }
+
+
+        async update(id, optionDto) {
+            const existOption = await this.check_option_exists_by_id(id);
+            if (optionDto.category && isValidObjectId(optionDto.category)) {
+                const category = await this.#categoryService.check_category_exists_by_id(optionDto.category);
+                optionDto.category = category._id;
+            } else {
+                delete optionDto.category
+            }
+            if (optionDto.slug) {
+                optionDto.key = slugify(optionDto.key, { trim: true, replacement: "_", lower: true });
+                let categoryId = existOption.category;
+                if (optionDto.category) categoryId = optionDto.category;
+                await this.check_option_exists_by_category_key(optionDto.key, categoryId, id)
+            }
+            if (optionDto?.enum && typeof optionDto.enum === "string") {
+                optionDto.enum = optionDto.enum.split(",")
+            } else if (!Array.isArray(optionDto.enum)) delete optionDto.enum;
+
+            if (isTrue(optionDto?.required)) optionDto.required = true;
+            else if (isFalse(optionDto?.required)) optionDto.required = false;
+            else delete optionDto?.required
+            return await this.#model.updateOne({ _id: id }, { $set: optionDto })
+        }
+
+
         // asistant methods
+        async check_option_isvalid(id) {
+            if (!isValidObjectId(id)) throw new createHttpError.Conflict(OptionMessages.OptionNotValid)
+            return null
+        }
         async check_option_exists_by_id(id) {
             const option = await this.#model.findById(id)
             if (!option) throw new createHttpError.NotFound(OptionMessages.OptionNotFound)

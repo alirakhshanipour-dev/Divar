@@ -8,5 +8,6 @@ const router = Router()
 router.post("/create", CategoryValidator, CategoryController.create_category)
 router.get("/", CategoryController.get_categories)
 router.get("/:id", CategoryController.get_category)
+router.delete("/:id", CategoryController.delete)
 
 export { router as CategoryRouter }

@@ -7,6 +7,8 @@ import { MainRouter } from "./src/app.routes.js";
 import { notFoundHandler } from "./src/handlers/errors/not_found.js";
 import { allErrorsHandler } from "./src/handlers/errors/all_errors.js";
 import cookieParser from "cookie-parser";
+import { config } from "dotenv";
+config()
 
 const main = () => {
     const app = express();

@@ -52,6 +52,21 @@ export const CategoryController = (() => {
                 next(error)
             }
         }
+
+
+        // delete category
+        async delete(req, res, next) {
+            try {
+                const { id } = req.params
+                await this.#service.delete(id)
+                return res.status(StatusCodes.NO_CONTENT)
+                    .json({
+                        message: CategoryMessages.DeleteCategory
+                    })
+            } catch (error) {
+                next(error)
+            }
+        }
     }
     return new CategoryController()
 })()

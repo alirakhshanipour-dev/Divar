@@ -11,7 +11,7 @@
  *  @swagger
  *  components:
  *     schemas:
- *         CreateOption:
+ *          CreateOption:
  *             type: object
  *             required:
  *                 -   title
@@ -34,9 +34,36 @@
  *                          -   boolean
  *                 guide:
  *                     type: string
+ *                 is_required:
+ *                     type: boolean
  *                 enum:
  *                     type: array
  *                     items:
+ *                          type: string
+ * 
+ *          UpdateOption:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                  key:
+ *                      type: string
+ *                  category:
+ *                      type: string
+ *                  guid:
+ *                      type: string
+ *                  required:
+ *                      type: boolean
+ *                  type:
+ *                      type: string
+ *                      enum:
+ *                          -   number
+ *                          -   string
+ *                          -   boolean
+ *                          -   array
+ *                  enum:
+ *                      type: array
+ *                      items:
  *                          type: string
 */
 
@@ -61,6 +88,30 @@
  *
 */
 
+/**
+ * @swagger
+ * /option/{id}:
+ *  put:
+ *      summary: update option by id
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *      requestBody:
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateOption'
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateOption'
+ *      responses:
+ *          201:
+ *              description: created
+ */
+/**
 
 /**
  * @swagger
@@ -123,6 +174,23 @@
  *      summary: get all options in this endpoint
  *      tags:
  *          -   Option
+ *      responses:
+ *          200:
+ *              description: success
+ *
+*/
+
+/**
+ * @swagger
+ * /option/{id}:
+ *  delete:
+ *      summary: delete option by id in this endpoint
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
  *      responses:
  *          200:
  *              description: success

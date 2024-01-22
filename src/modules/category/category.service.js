@@ -5,13 +5,16 @@ import createHttpError from "http-errors"
 import { CategoryMessages } from "./messages/category.messages.js"
 import omitEmpty from "omit-empty"
 import { Types } from "mongoose"
+import { OptionModel } from "../option/option.model.js"
 
 export const CategoryService = (() => {
     class CategoryService {
         #model
+        #optionModel
         constructor() {
             autoBind(this)
             this.#model = CategoryModel
+            this.#optionModel = OptionModel
         }
 
         async create_category(optionDTO) {
@@ -43,6 +46,14 @@ export const CategoryService = (() => {
             const category = await this.#model.findById(id)
             if (!category) throw new createHttpError.NotFound(CategoryMessages.CategoryNotFound)
             return category
+        }
+
+        async delete(id) {
+            await this.check_category_exists_by_id(id)
+            await this.#optionModel.deleteMany({ category: id }).then(async () => {
+                await this.#model.deleteOne({ _id: id })
+            })
+            return true
         }
 
 
